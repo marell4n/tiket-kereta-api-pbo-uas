@@ -66,4 +66,17 @@ public class Schedule {
     public void setPrice(double price) {
         this.price = price;
     }
+    
+    @Override
+    public String toString() {
+        // Cek null untuk keamanan
+        if (train == null || route == null) {
+            return "Jadwal " + scheduleId;
+        }
+        // Format: Argo Parahyangan (GMR -> BD) - 08:00
+        return train.getTrainName() + " (" + 
+               route.getOriginStation().getStationCode() + " -> " + 
+               route.getDestinationStation().getStationCode() + ") - " +
+               util.DateUtil.formatLDT(departureTime);
+    }
 }

@@ -5,6 +5,7 @@
 package model;
 
 import util.*;
+import model.payment.*;
 
 /**
  *
@@ -43,6 +44,29 @@ public class Ticket {
         
         sb.append("Harga: Rp").append(bookingDetails.getTotalAmount()).append("\n");
         sb.append("Status: ").append(bookingDetails.isPaid() ? "LUNAS" : "BELUM LUNAS").append("\n");
+        sb.append("------------------------\n");
+        sb.append("--- RESI PEMBAYARAN ---\n");
+        
+        PaymentMethod payment = bookingDetails.getPaymentMethod();
+        if (payment != null) {
+            sb.append("Metode Bayar: ").append(payment.getPaymentName()).append("\n");
+            
+            // Cek tipe payment method (Polimorfisme)
+            if (payment instanceof CreditCardPayment) {
+                CreditCardPayment cc = (CreditCardPayment) payment;
+                // Kita sensor nomor kartunya
+                String cardNumber = cc.getCardNumber();
+                String lastFourDigits = cardNumber.substring(cardNumber.length() - 4);
+                sb.append("Nomor Kartu: XXXX-XXXX-XXXX-").append(lastFourDigits).append("\n");
+                
+            } else if (payment instanceof BankTransferPayment) {
+                BankTransferPayment bt = (BankTransferPayment) payment;
+                sb.append("Virtual Account: ").append(bt.getVirtualAccount()).append("\n");
+            }
+        }
+        // Kita pakai Booking ID sebagai ID Transaksi
+        sb.append("ID Transaksi: ").append(bookingDetails.getBookingId()).append("\n"); 
+        sb.append("Jumlah Bayar: Rp").append(bookingDetails.getTotalAmount()).append("\n");
         sb.append("------------------------\n");
         
         return sb.toString();

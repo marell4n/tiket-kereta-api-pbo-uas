@@ -10,4 +10,12 @@
         <maven.compiler.release>24</maven.compiler.release>
         <exec.mainClass>SistemKeretaApi</exec.mainClass>
     </properties>
+    
+        <dependencies>
+        <dependency>
+            <groupId>com.formdev</groupId>
+            <artifactId>flatlaf</artifactId>
+            <version>3.4.1</version> <!-- Versi terbaru saat ini -->
+        </dependency>
+    </dependencies>
 </project>

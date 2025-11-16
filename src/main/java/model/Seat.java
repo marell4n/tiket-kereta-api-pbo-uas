@@ -51,4 +51,9 @@ public class Seat {
     public void setSeatNumber(String seatNumber) {
         this.seatNumber = seatNumber;
     }
+    
+    @Override
+    public String toString() {
+        return seatNumber;
+    }
 }
