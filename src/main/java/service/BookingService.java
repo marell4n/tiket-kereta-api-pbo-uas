@@ -17,9 +17,11 @@ import model.payment.*;
  */
 public class BookingService {
     private ScheduleRepository scheduleRepo;
+    private TicketRepository ticketRepo;
 
-    public BookingService(ScheduleRepository scheduleRepo) {
+    public BookingService(ScheduleRepository scheduleRepo, TicketRepository ticketRepo) {
         this.scheduleRepo = scheduleRepo;
+        this.ticketRepo = ticketRepo;
     }
     
     public List<Schedule> searchAvailableSchedules(Station origin, Station destination, LocalDateTime date) {
@@ -66,6 +68,8 @@ public class BookingService {
             // 5. Buat Tiket
             String ticketId = "TK-" + UUID.randomUUID().toString().substring(0, 8);
             Ticket ticket = new Ticket(ticketId, booking);
+            
+            ticketRepo.save(ticket);
             
             System.out.println("Booking Berhasil! Tiket telah diterbitkan.");
             return ticket;

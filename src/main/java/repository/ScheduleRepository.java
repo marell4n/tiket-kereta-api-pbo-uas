@@ -14,7 +14,7 @@ import model.*;
  *
  * @author asus
  */
-public class ScheduleRepository implements Repository {
+public class ScheduleRepository implements Repository<Schedule> {
     private Map<String, Station> stationCache = new HashMap<>();
     private Map<String, Train> trainCache = new HashMap<>();
     private Map<String, Schedule> scheduleDatabase = new HashMap<>();

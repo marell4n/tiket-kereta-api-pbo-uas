@@ -3,6 +3,7 @@ model\Station.class
 service\BookingService.class
 util\DateUtil.class
 model\Passenger.class
+repository\TicketRepository.class
 BookingGUI.class
 repository\Repository.class
 model\Route.class

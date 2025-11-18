@@ -12,6 +12,7 @@ D:\kuliah\pbo\uas2\SistemKeretaApi\src\main\java\model\Ticket.java
 D:\kuliah\pbo\uas2\SistemKeretaApi\src\main\java\model\Train.java
 D:\kuliah\pbo\uas2\SistemKeretaApi\src\main\java\repository\Repository.java
 D:\kuliah\pbo\uas2\SistemKeretaApi\src\main\java\repository\ScheduleRepository.java
+D:\kuliah\pbo\uas2\SistemKeretaApi\src\main\java\repository\TicketRepository.java
 D:\kuliah\pbo\uas2\SistemKeretaApi\src\main\java\service\BookingService.java
 D:\kuliah\pbo\uas2\SistemKeretaApi\src\main\java\SistemKeretaApi.java
 D:\kuliah\pbo\uas2\SistemKeretaApi\src\main\java\util\DatabaseUtil.java

@@ -15,111 +15,197 @@ import repository.*;
  * @author asus
  */
 public class SistemKeretaApi {
+    private static ScheduleRepository scheduleRepo;
+    private static TicketRepository ticketRepo;
+    private static BookingService service;
+    private static Passenger passenger;
+    private static Scanner sc;
+    
     public static void main(String[] args) {
         System.out.println("--- SELAMAT DATANG DI SISTEM BOOKING TIKET KERETA API ---");
         
-        // 1. Inisialisasi Database (Repository dan Data Dummy)
-        ScheduleRepository repo = setupData();
+        // 1. Inisialisasi (Hanya sekali di awal)
+        initSystem();
         
-        // 2. Inisialisasi Booking Service
-        BookingService service = new BookingService(repo);
+        boolean running = true;
+        while (running) {
+            System.out.println("\n=================================");
+            System.out.println("Halo, " + passenger.getName());
+            System.out.println("=================================");
+            System.out.println("1. Pesan Tiket Baru");
+            System.out.println("2. Lihat Riwayat Tiket Saya");
+            System.out.println("3. Keluar");
+            System.out.print("Pilih menu (1-3): ");
+            
+            int choice = sc.nextInt();
+            sc.nextLine(); // Bersihkan buffer newline
+            
+            switch (choice) {
+                case 1:
+                    menuPesanTiket();
+                    break;
+                case 2:
+                    menuLihatRiwayat();
+                    break;
+                case 3:
+                    running = false;
+                    System.out.println("Terima kasih telah menggunakan layanan kami!");
+                    break;
+                default:
+                    System.out.println("Pilihan tidak valid.");
+            }
+        }
         
-        // 3. Data Penumpang (Dummy)
-        Passenger passenger = new Passenger("P001", "pass123", "Budi Santoso", "budi@email.com");
+        sc.close();
+    }
+// --- MENU 1: PESAN TIKET ---
+    private static void menuPesanTiket() {
+        System.out.println("\n--- MENU PESAN TIKET ---");
         
-        // 4. Simulasi Skenario Console
-        Scanner sc = new Scanner(System.in);
-        
-        System.out.println("\nLogin sebagai: " + passenger.getName());
-        
-        // Ambil data stasiun dari repo
-        Station gambir = repo.getStation("GMR");
-        Station bandung = repo.getStation("BD");
+        Station gambir = scheduleRepo.getStation("GMR");
+        Station bandung = scheduleRepo.getStation("BD");
         LocalDateTime searchDate = LocalDateTime.of(2025, 12, 25, 0, 0);
 
-        System.out.println("\nMencari jadwal untuk: " + gambir.getStationName() + " -> " + bandung.getStationName() + " pada " + DateUtil.formatLDT(searchDate));
+        System.out.println("Mencari jadwal: " + gambir.getStationName() + " -> " + bandung.getStationName());
         
-        // 5. Cari Jadwal
         List<Schedule> schedules = service.searchAvailableSchedules(gambir, bandung, searchDate);
         
         if (schedules.isEmpty()) {
-            System.out.println("Jadwal tidak ditemukan.");
+            System.out.println("Maaf, jadwal tidak ditemukan.");
             return;
         }
         
-        // Tampilkan jadwal
-        Schedule selectedSchedule = schedules.get(0); // Ambil jadwal pertama
-        System.out.println("Jadwal Ditemukan:");
-        System.out.println("Kereta: " + selectedSchedule.getTrain().getTrainName());
-        System.out.println("Waktu: " + DateUtil.formatLDT(selectedSchedule.getDepartureTime()));
-        System.out.println("Harga: Rp" + selectedSchedule.getPrice());
+        // Tampilkan Jadwal
+        System.out.println("\nJadwal Tersedia:");
+        for (int i = 0; i < schedules.size(); i++) {
+            Schedule s = schedules.get(i);
+            System.out.println((i + 1) + ". " + s.getTrain().getTrainName() + 
+                               " (" + DateUtil.formatLDT(s.getDepartureTime()) + ")" +
+                               " - Rp" + s.getPrice());
+        }
+        
+        System.out.print("Pilih nomor jadwal (0 untuk batal): ");
+        int scheduleChoice = sc.nextInt();
+        if (scheduleChoice < 1 || scheduleChoice > schedules.size()) {
+            System.out.println("Batal memilih jadwal.");
+            return;
+        }
+        Schedule selectedSchedule = schedules.get(scheduleChoice - 1);
 
-        // 6. Pilih Kursi
-        Seat selectedSeat = selectedSchedule.getTrain().getSeatByNumber("EKO-03");
-        System.out.println("\nMemilih kursi: " + selectedSeat.getSeatNumber());
+        // Pilih Kursi
+        System.out.println("\nMemeriksa ketersediaan kursi...");
+        List<Seat> seats = selectedSchedule.getTrain().getSeats();
+        Seat selectedSeat = null;
+        
+        // Tampilkan kursi yang available saja
+        int count = 0;
+        for(Seat s : seats) {
+            if(s.isAvailable()) {
+                if (selectedSeat == null) selectedSeat = s; // Pilih otomatis yang pertama
+                System.out.print("[" + s.getSeatNumber() + "] ");
+                count++;
+            }
+            if (count >= 5) break; 
+        }
+        System.out.println("...");
+        
+        if (selectedSeat == null) {
+            System.out.println("Maaf, semua kursi penuh!");
+            return;
+        }
+        System.out.println("Sistem otomatis memilihkan kursi: " + selectedSeat.getSeatNumber());
 
-        // 7. Pilih Metode Pembayaran (Polimorfisme)
+        // Pembayaran
         System.out.println("\nPilih Metode Pembayaran:");
         System.out.println("1. Credit Card");
         System.out.println("2. Bank Transfer");
         System.out.print("Pilihan: ");
         int paymentChoice = sc.nextInt();
+        sc.nextLine();
         
         PaymentMethod paymentMethod;
         if (paymentChoice == 1) {
-            paymentMethod = new CreditCardPayment("1234-5678-9012-3456");
+            String nomorKartu = "";
+
+            while (nomorKartu.isBlank()) {
+                System.out.print("Masukkan Nomor Credit Card: ");
+                nomorKartu = sc.nextLine().trim(); // trim() menghapus spasi depan/belakang
+                
+                if (nomorKartu.isBlank()) {
+                    System.out.println(">> Error: Nomor kartu tidak boleh kosong! Silakan input ulang.");
+                }
+            }
+            paymentMethod = new CreditCardPayment(nomorKartu);
         } else {
             paymentMethod = new BankTransferPayment("8808123456789");
         }
 
-        // 8. Proses Booking
-        System.out.println("\n--- MEMPROSES PEMBAYARAN & BOOKING ---");
+        // Proses
         Ticket ticket = service.processBooking(passenger, selectedSchedule, selectedSeat, paymentMethod);
         
-        // 9. Cetak Tiket
         if (ticket != null) {
-            System.out.println("\n--- CETAK TIKET ---");
+            System.out.println("\n>>> BOOKING SUKSES! <<<");
             System.out.println(ticket.getFormattedTicket());
         } else {
-            System.out.println("Gagal mencetak tiket.");
+            System.out.println("\n>>> BOOKING GAGAL <<<");
         }
-        
-        sc.close();
     }
     
-    /**
-     * Helper method untuk inisialisasi data dummy.
-     */
+    // --- MENU 2: LIHAT RIWAYAT ---
+    private static void menuLihatRiwayat() {
+        System.out.println("\n--- RIWAYAT TIKET SAYA ---");
+        
+        // Mengambil semua tiket dari TicketRepository
+        List<Ticket> myTickets = ticketRepo.findAll();
+        
+        if (myTickets.isEmpty()) {
+            System.out.println("Belum ada tiket yang dipesan.");
+        } else {
+            for (int i = 0; i < myTickets.size(); i++) {
+                Ticket t = myTickets.get(i);
+                System.out.println("Tiket #" + (i+1) + " (ID: " + t.getTicketId() + ")");
+                System.out.println("Rute: " + t.getBookingDetails().getSchedule().getRoute().getOriginStation().getStationName() + 
+                                   " -> " + t.getBookingDetails().getSchedule().getRoute().getDestinationStation().getStationName());
+                System.out.println("Status: " + (t.getBookingDetails().isPaid() ? "LUNAS" : "BELUM LUNAS"));
+                System.out.println("-------------------------------");
+            }
+        }
+        // Pause biar user bisa baca
+        System.out.println("Tekan Enter untuk kembali ke menu...");
+        try { System.in.read(); } catch (Exception e) {}
+    }
+
+    // --- SETUP SYSTEM ---
+    private static void initSystem() {
+        scheduleRepo = setupData();
+        ticketRepo = new TicketRepository();
+        service = new BookingService(scheduleRepo, ticketRepo);
+        passenger = new Passenger("P001", "pass123", "Budi Santoso", "budi@email.com");
+        sc = new Scanner(System.in);
+    }
+    
     private static ScheduleRepository setupData() {
-        // 1. Buat Stasiun
         Station gambir = new Station("GMR", "Stasiun Gambir");
         Station bandung = new Station("BD", "Stasiun Bandung");
         
-        // 2. Buat Kereta (Komposisi: Kursi dibuat di dalam)
-        Train argoParahyangan = new Train("K1", "Argo Parahyangan", 5); // 5 kursi
+        Train argoParahyangan = new Train("K1", "Argo Parahyangan", 5);
+        Train lodaya = new Train("K2", "Lodaya Pagi", 3);
         
-        // 3. Buat Rute (Agregasi)
         Route ruteGMR_BD = new Route("R01", gambir, bandung);
+        Route ruteBD_GMR = new Route("R02", bandung, gambir);
         
-        // 4. Buat Jadwal (Agregasi)
-        Schedule jadwalPagi = new Schedule(
-            "S01", 
-            ruteGMR_BD, 
-            argoParahyangan, 
-            LocalDateTime.of(2025, 12, 25, 8, 0, 0), 
-            150000.0
-        );
+        Schedule jadwalPagi = new Schedule("S01", ruteGMR_BD, argoParahyangan, LocalDateTime.of(2025, 12, 25, 8, 0, 0), 150000.0);
+        Schedule jadwalSiang = new Schedule("S02", ruteGMR_BD, lodaya, LocalDateTime.of(2025, 12, 25, 10, 0, 0), 210000.0);
+        Schedule jadwalBalik = new Schedule("S03", ruteBD_GMR, argoParahyangan, LocalDateTime.of(2025, 12, 26, 14, 0, 0), 155000.0);
         
-        // 5. Setup Repository
         ScheduleRepository repo = new ScheduleRepository();
-        
-        // Masukkan cache (sesuai UML)
         repo.addStationToCache(gambir);
         repo.addStationToCache(bandung);
         repo.addTrainToCache(argoParahyangan);
-        
-        // Masukkan data ke DB simulasi
+        repo.addTrainToCache(lodaya);
         repo.save(jadwalPagi);
+        repo.save(jadwalSiang);
+        repo.save(jadwalBalik);
         
         return repo;
     }

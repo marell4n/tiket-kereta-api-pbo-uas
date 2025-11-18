@@ -10,9 +10,8 @@ import model.Schedule;
  *
  * @author asus
  */
-public interface Repository {
-    Schedule findById(String id);
-    List<Schedule> findAll();
-    
-    void save(Schedule object);
+public interface Repository<T> {
+    T findById(String id);
+    List<T> findAll();
+    void save(T object);
 }

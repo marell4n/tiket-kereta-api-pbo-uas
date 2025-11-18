@@ -50,9 +50,16 @@ public class BookingGUI extends JFrame {
     public BookingGUI() {
         // 1. Setup data (panggil helper setupData)
         this.repo = setupData();
-        this.service = new BookingService(repo);
+        // 1. Setup Data Master (Jadwal)
+    this.repo = setupData(); 
+    
+    // 2. Setup Repo Tiket (BARU)
+    TicketRepository ticketRepo = new TicketRepository();
+    
+    // 3. Masukkan keduanya ke Service
+    this.service = new BookingService(repo, ticketRepo);
         
-        // 3. Setup tampilan JFrame
+        // 4. Setup tampilan JFrame
         setTitle("Sistem Booking Tiket Kereta Api");
         setSize(550, 650); 
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -236,11 +243,7 @@ public class BookingGUI extends JFrame {
         });
     }
     
-    /**
-     * Method helper BARU
-     * Untuk meng-update dropdown kursi dan label harga
-     * setiap kali jadwal diubah.
-     */
+    // Method pembantu untuk meng-update dropdown kursi dan label harga setiap kali jadwal diubah.
     private void updateSeatAndPrice() {
         // 1. Ambil jadwal yang dipilih
         Schedule selectedSchedule = (Schedule) scheduleComboBox.getSelectedItem();
@@ -261,10 +264,7 @@ public class BookingGUI extends JFrame {
         }
     }
 
-    /**
-     * Helper method untuk inisialisasi data dummy.
-     * --- SEKARANG DENGAN LEBIH BANYAK DATA ---
-     */
+    // Helper method untuk inisialisasi data dummy.
     private static ScheduleRepository setupData() {
         // 1. Buat Stasiun
         Station gambir = new Station("GMR", "Stasiun Gambir");
@@ -304,7 +304,7 @@ public class BookingGUI extends JFrame {
         // 5. Setup Repository
         ScheduleRepository repo = new ScheduleRepository();
         
-        // Masukkan cache (sesuai UML)
+        // Masukkan cache
         repo.addStationToCache(gambir);
         repo.addStationToCache(bandung);
         repo.addTrainToCache(argoParahyangan);
@@ -325,20 +325,17 @@ public class BookingGUI extends JFrame {
             @Override
             public void run() {
                 
-                // --- KODE BARU UNTUK TEMA ---
+                // --- Kode untuk Tema ---
                 try {
                     // Set FlatLaf Light Look and Feel
                     UIManager.setLookAndFeel(new FlatLightLaf());
                     
-                    // --- TAMBAHAN KODE PINK ---
-                    // Mengubah warna aksen default (biru) menjadi pink
-                    // Ini akan mengubah warna radio button, focus ring, dll.
+                    // Kode untuk mengubah warna aksen default (biru) menjadi pink (radio button, focus ring, dll.)
                     UIManager.put("Component.accentColor", new Color(230, 60, 125));
                     
                 } catch (Exception ex) {
                     System.err.println("Gagal menginisialisasi tema (LaF).");
                 }
-                // --- BATAS KODE BARU ---
                 
                 new BookingGUI().setVisible(true);
             }
