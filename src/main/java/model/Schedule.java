@@ -25,7 +25,6 @@ public class Schedule {
         this.price = price;
     }
 
-    // Getters (Sesuai UML)
     public String getScheduleId() {
         return scheduleId;
     }
@@ -46,7 +45,6 @@ public class Schedule {
         return price;
     }
 
-    // Setters (Enkapsulasi)
     public void setScheduleId(String scheduleId) {
         this.scheduleId = scheduleId;
     }

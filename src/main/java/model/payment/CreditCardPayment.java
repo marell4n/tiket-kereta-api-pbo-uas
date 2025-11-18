@@ -21,18 +21,10 @@ public class CreditCardPayment extends PaymentMethod{
         return cardNumber;
     }
 
-    /**
-     * Implementasi (Override) method abstract dari parent.
-     * Ini adalah contoh Polymorphism.
-     * Sesuai dengan diagram UML.
-     * @param amount Jumlah yang harus dibayar.
-     * @return true (simulasi selalu sukses).
-     */
     @Override
     public boolean pay(double amount) {
         System.out.println("Memproses pembayaran Credit Card sebesar Rp" + amount + "...");
         System.out.println("Menggunakan kartu: " + this.cardNumber);
-        // Simulasi validasi kartu...
         System.out.println("Pembayaran Berhasil.");
         return true;
     }

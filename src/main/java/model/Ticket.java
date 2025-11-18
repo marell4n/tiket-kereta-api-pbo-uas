@@ -20,12 +20,6 @@ public class Ticket {
         this.bookingDetails = bookingDetails;
     }
 
-    /**
-     * Method untuk menampilkan detail tiket yang diformat.
-     * Menggunakan (depend on) DateUtil.
-     * Sesuai dengan diagram UML.
-     * @return String detail tiket.
-     */
     public String getFormattedTicket() {
         StringBuilder sb = new StringBuilder();
         sb.append("--- TIKET KERETA API ---\n");
@@ -54,7 +48,6 @@ public class Ticket {
             // Cek tipe payment method (Polimorfisme)
             if (payment instanceof CreditCardPayment) {
                 CreditCardPayment cc = (CreditCardPayment) payment;
-                // Kita sensor nomor kartunya
                 String cardNumber = cc.getCardNumber();
                 String lastFourDigits = cardNumber.substring(cardNumber.length() - 4);
                 sb.append("Nomor Kartu: XXXX-XXXX-XXXX-").append(lastFourDigits).append("\n");
@@ -72,7 +65,6 @@ public class Ticket {
         return sb.toString();
     }
 
-    // Getters (Sesuai UML)
     public String getTicketId() {
         return ticketId;
     }
@@ -81,7 +73,6 @@ public class Ticket {
         return bookingDetails;
     }
 
-    // Setters (Enkapsulasi)
     public void setTicketId(String ticketId) {
         this.ticketId = ticketId;
     }

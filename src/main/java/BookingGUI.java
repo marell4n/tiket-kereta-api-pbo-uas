@@ -29,21 +29,20 @@ import javax.swing.border.EmptyBorder;
  * @author asus
  */
 public class BookingGUI extends JFrame {
-     // Ini adalah referensi ke LOGIKA kita
+     // Referensi ke logika kita
     private BookingService service;
     private ScheduleRepository repo;
 
     // Komponen GUI
-    // --- JTextArea (ticketDisplayArea) DIHAPUS DARI SINI ---
     private JButton bookButton;
     
-    // --- KOMPONEN BARU UNTUK INPUT ---
+    // Komponen untuk input
     private JTextField nameField;
     private JComboBox<Schedule> scheduleComboBox;
     private JComboBox<Seat> seatComboBox;
-    private JLabel priceLabel; // Label harga yang bisa di-update
+    private JLabel priceLabel; 
     
-    // Komponen radio button (tetap)
+    // Komponen radio button
     private JRadioButton ccRadio; // Tombol radio Kartu Kredit
     private JRadioButton btRadio; // Tombol radio Bank Transfer
     private ButtonGroup paymentGroup; // Grup agar hanya 1 yang bisa dipilih
@@ -55,19 +54,18 @@ public class BookingGUI extends JFrame {
         
         // 3. Setup tampilan JFrame
         setTitle("Sistem Booking Tiket Kereta Api");
-        // Kita bisa buat sedikit lebih pendek karena text area hilang
         setSize(550, 650); 
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setLocationRelativeTo(null); // Menengahkan jendela
+        setLocationRelativeTo(null);
         
-        // --- Panel Utama (Biar ada padding) ---
+        // Panel Utama
         JPanel mainPanel = new JPanel(new BorderLayout(15, 15));
         mainPanel.setBorder(new EmptyBorder(20, 20, 20, 20));
-        mainPanel.setBackground(new Color(255, 245, 248)); // Latar belakang pink pucat
+        mainPanel.setBackground(new Color(255, 245, 248)); // Latar belakang pink
         setContentPane(mainPanel);
 
 
-        // --- Panel Info (Bagian Atas) ---
+        // --- Panel Info (Atas) ---
         JPanel infoPanel = new JPanel(new GridLayout(0, 1, 8, 8)); // 0 baris, 1 kolom, gap 8px
         infoPanel.setOpaque(false); // Transparan, ikut warna mainPanel
         
@@ -78,13 +76,13 @@ public class BookingGUI extends JFrame {
         infoPanel.add(titleLabel);
         infoPanel.add(new JSeparator());
         
-        // --- Input Nama Penumpang ---
+        // Input Nama Penumpang
         infoPanel.add(new JLabel("Nama Penumpang:"));
-        nameField = new JTextField("Marellan"); // Nama default
+        nameField = new JTextField("Nadia"); // Nama default
         nameField.setFont(nameField.getFont().deriveFont(14f));
         infoPanel.add(nameField);
         
-        // --- Pilihan Jadwal ---
+        // Pilihan Jadwal
         infoPanel.add(new JLabel("Pilih Jadwal:"));
         scheduleComboBox = new JComboBox<>();
         scheduleComboBox.setFont(scheduleComboBox.getFont().deriveFont(14f));
@@ -95,30 +93,30 @@ public class BookingGUI extends JFrame {
         }
         infoPanel.add(scheduleComboBox);
         
-        // --- Pilihan Kursi ---
+        // Pilihan Kursi
         infoPanel.add(new JLabel("Pilih Kursi:"));
         seatComboBox = new JComboBox<>();
         seatComboBox.setFont(seatComboBox.getFont().deriveFont(14f));
         infoPanel.add(seatComboBox);
 
-        // --- Label Harga Dinamis ---
+        // Label Harga Dinamis
         priceLabel = new JLabel("Harga: Rp 0.0");
         priceLabel.setFont(priceLabel.getFont().deriveFont(16f).deriveFont(java.awt.Font.BOLD));
         infoPanel.add(priceLabel);
         
         
-        // --- TAMBAHKAN PILIHAN PEMBAYARAN ---
+        // Pilihan Pembayaran
         infoPanel.add(new JSeparator()); // Garis pemisah
         JLabel paymentLabel = new JLabel("Pilih Metode Pembayaran:");
         paymentLabel.setFont(paymentLabel.getFont().deriveFont(16f).deriveFont(java.awt.Font.BOLD));
         infoPanel.add(paymentLabel);
         
-        ccRadio = new JRadioButton("Credit Card (1234-...)");
+        ccRadio = new JRadioButton("Credit Card");
         ccRadio.setSelected(true); // Default pilih credit card
         ccRadio.setFont(ccRadio.getFont().deriveFont(14f));
         ccRadio.setOpaque(false);
         
-        btRadio = new JRadioButton("Bank Transfer (VA 8808-...)");
+        btRadio = new JRadioButton("Bank Transfer");
         btRadio.setFont(btRadio.getFont().deriveFont(14f));
         btRadio.setOpaque(false);
         
@@ -127,27 +125,24 @@ public class BookingGUI extends JFrame {
         paymentGroup.add(ccRadio);
         paymentGroup.add(btRadio);
         
-        // Panel kecil untuk radio button
+        // Panel untuk radio button
         JPanel radioPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         radioPanel.setOpaque(false);
         radioPanel.add(ccRadio);
         radioPanel.add(btRadio);
         infoPanel.add(radioPanel);
 
-        // --- PERUBAHAN LAYOUT ---
-        // Kita letakkan panel form di TENGAH (CENTER)
+        // Layout
+        // Panel form di tengah
         mainPanel.add(infoPanel, BorderLayout.CENTER);
 
-        // --- Text Area DIHAPUS dari sini ---
-        // mainPanel.add(scrollPane, BorderLayout.CENTER);
-
-        // --- Tombol untuk book ---
+        // Tombol untuk book
         bookButton = new JButton("Bayar dan Pesan Tiket");
         // Style Tombol (accent button)
         bookButton.putClientProperty("JButton.buttonType", "roundRect");
         bookButton.putClientProperty("JComponent.outline", "accent");
         bookButton.setFont(bookButton.getFont().deriveFont(16f).deriveFont(java.awt.Font.BOLD));
-        bookButton.setBackground(new Color(230, 60, 125)); // Warna pink utama
+        bookButton.setBackground(new Color(230, 60, 125)); // Warna pink
         bookButton.setForeground(Color.WHITE);
         bookButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
         bookButton.setPreferredSize(new Dimension(bookButton.getPreferredSize().width, 50));
@@ -157,8 +152,6 @@ public class BookingGUI extends JFrame {
         buttonPanel.add(bookButton, BorderLayout.CENTER);
         mainPanel.add(buttonPanel, BorderLayout.SOUTH);
 
-        
-        // --- LOGIKA PENTING (Baru) ---
         // 1. Saat jadwal di-klik, update daftar kursi dan harga
         scheduleComboBox.addItemListener((ItemEvent e) -> {
             if (e.getStateChange() == ItemEvent.SELECTED) {
@@ -173,7 +166,7 @@ public class BookingGUI extends JFrame {
         bookButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // --- AMBIL SEMUA DATA INPUT DARI USER ---
+                // Ambil Semua Data Input dari User
                 
                 // 1. Ambil Nama
                 String namaPenumpang = nameField.getText();
@@ -209,12 +202,11 @@ public class BookingGUI extends JFrame {
                     paymentMethod = new BankTransferPayment("8808123456789");
                 }
                 
-                // --- PANGGIL SERVICE (LOGIKA) ---
+                // --- Panggil Service ---
                 Ticket ticket = service.processBooking(passenger, selectedSchedule, selectedSeat, paymentMethod);
                 
                 // 6. Tampilkan hasil ke GUI
                 if (ticket != null) {
-                    // --- INI PERUBAHAN UTAMANYA ---
                     // Buat JTextArea untuk ditaruh di dalam pop-up
                     JTextArea receiptArea = new JTextArea(ticket.getFormattedTicket());
                     receiptArea.setEditable(false);

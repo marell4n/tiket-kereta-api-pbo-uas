@@ -19,7 +19,6 @@ public class Route {
         this.destinationStation = destinationStation;
     }
 
-    // Getters (Sesuai UML)
     public String getRouteId() {
         return routeId;
     }
@@ -32,7 +31,6 @@ public class Route {
         return destinationStation;
     }
 
-    // Setters (Enkapsulasi)
     public void setRouteId(String routeId) {
         this.routeId = routeId;
     }

@@ -14,12 +14,6 @@ public class DateUtil {
     // Atribut static formatter
     private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");
 
-    /**
-     * Method static untuk memformat LocalDateTime menjadi String.
-     * Sesuai dengan diagram UML.
-     * @param dateTime Waktu yang akan diformat.
-     * @return String tanggal dan waktu yang sudah diformat.
-     */
     public static String formatLDT(LocalDateTime dateTime) {
         if (dateTime == null) {
             return "N/A";

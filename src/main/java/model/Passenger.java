@@ -22,18 +22,10 @@ public class Passenger {
         this.email = email;
     }
 
-    /**
-     * Method simulasi login.
-     * Sesuai dengan diagram UML.
-     * @param email Email yang dimasukkan
-     * @param password Password yang dimasukkan
-     * @return true jika login berhasil, false jika gagal.
-     */
     public boolean login(String email, String password) {
         return this.email.equals(email) && this.password.equals(password);
     }
 
-    // Getters (Sesuai UML)
     public String getPassengerId() {
         return passengerId;
     }
@@ -46,7 +38,6 @@ public class Passenger {
         return email;
     }
 
-    // Setters (Enkapsulasi)
     public void setPassengerId(String passengerId) {
         this.passengerId = passengerId;
     }

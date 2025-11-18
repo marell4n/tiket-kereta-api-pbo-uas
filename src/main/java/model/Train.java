@@ -20,14 +20,9 @@ public class Train {
         this.trainNumber = trainNumber;
         this.trainName = trainName;
         this.seats = new ArrayList<>(); // Kursi dibuat saat kereta dibuat
-        initializeSeats(totalSeats); // Memanggil method sesuai UML
+        initializeSeats(totalSeats);
     }
 
-    /**
-     * Method untuk inisialisasi kursi di kereta.
-     * Sesuai dengan diagram UML.
-     * @param totalSeats Jumlah kursi yang akan dibuat.
-     */
     private void initializeSeats(int totalSeats) {
         for (int i = 1; i <= totalSeats; i++) {
             // Contoh format kursi: EKO-01, EKS-01
@@ -36,7 +31,6 @@ public class Train {
         }
     }
 
-    // Getters (Sesuai UML)
     public String getTrainNumber() {
         return trainNumber;
     }
@@ -49,7 +43,7 @@ public class Train {
         return seats;
     }
     
-    // Method tambahan (helper) untuk fungsionalitas
+    // Method tambahan untuk fungsionalitas
     public Seat getSeatByNumber(String seatNumber) {
         for (Seat seat : seats) {
             if (seat.getSeatNumber().equalsIgnoreCase(seatNumber)) {
@@ -59,7 +53,6 @@ public class Train {
         return null;
     }
 
-    // Setters (Enkapsulasi)
     public void setTrainNumber(String trainNumber) {
         this.trainNumber = trainNumber;
     }

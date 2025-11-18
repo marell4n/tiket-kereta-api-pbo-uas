@@ -35,21 +35,15 @@ public class ScheduleRepository implements Repository {
         System.out.println("Jadwal " + object.getScheduleId() + " berhasil disimpan.");
     }
     
-     /**
-     * Sesuai dengan diagram UML.
-     */
     public Train getTrain(String trainId) {
         return trainCache.get(trainId);
     }
-    
-    /**
-     * Sesuai dengan diagram UML.
-     */
+
     public Station getStation(String stationId) {
         return stationCache.get(stationId);
     }
 
-    // Helper methods untuk mengisi cache (untuk demo)
+    // Methods pembantu untuk mengisi cache (untuk demo)
     public void addStationToCache(Station station) {
         stationCache.put(station.getStationCode(), station);
     }

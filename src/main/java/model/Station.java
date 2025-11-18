@@ -17,7 +17,6 @@ public class Station {
         this.stationName = stationName;
     }
 
-    // Getters (Enkapsulasi)
     public String getStationCode() {
         return stationCode;
     }
@@ -26,7 +25,6 @@ public class Station {
         return stationName;
     }
 
-    // Setters (Enkapsulasi)
     public void setStationCode(String stationCode) {
         this.stationCode = stationCode;
     }

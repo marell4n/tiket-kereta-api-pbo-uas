@@ -15,7 +15,7 @@ public class Booking {
     private Passenger passenger;
     private Schedule schedule;
     private Seat selectedSeat;
-    private PaymentMethod paymentMethod; // Polimorfisme di sini
+    private PaymentMethod paymentMethod; // Polimorfisme
     private double totalAmount;
     private boolean isPaid;
 
@@ -31,7 +31,6 @@ public class Booking {
         this.isPaid = false;
     }
 
-    // Getters (Sesuai UML)
     public String getBookingId() {
         return bookingId;
     }
@@ -62,14 +61,11 @@ public class Booking {
 
     /**
      * Method untuk set payment method.
-     * Sesuai dengan diagram UML.
-     * @param paymentMethod Bisa CreditCardPayment atau BankTransferPayment.
      */
     public void setPaymentMethod(PaymentMethod paymentMethod) {
         this.paymentMethod = paymentMethod;
     }
-    
-    // Setters (Enkapsulasi)
+
     public void setBookingId(String bookingId) {
         this.bookingId = bookingId;
     }

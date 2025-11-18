@@ -17,20 +17,14 @@ public class Seat {
         this.isAvailable = true; // Default kursi tersedia saat dibuat
     }
 
-    // Sesuai UML
     public String getSeatNumber() {
         return seatNumber;
     }
 
-    // Sesuai UML
     public boolean isAvailable() {
         return isAvailable;
     }
 
-    /**
-     * Method untuk mem-booking kursi.
-     * Sesuai dengan diagram UML.
-     */
     public void bookSeat() {
         if (isAvailable) {
             this.isAvailable = false;
@@ -39,15 +33,10 @@ public class Seat {
         }
     }
 
-    /**
-     * Method untuk membatalkan booking kursi.
-     * Sesuai dengan diagram UML.
-     */
     public void cancelBooking() {
         this.isAvailable = true;
     }
 
-    // Setter (Enkapsulasi tambahan)
     public void setSeatNumber(String seatNumber) {
         this.seatNumber = seatNumber;
     }
