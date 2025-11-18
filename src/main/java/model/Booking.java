@@ -19,9 +19,6 @@ public class Booking {
     private double totalAmount;
     private boolean isPaid;
 
-    /**
-     * Constructor sesuai UML.
-     */
     public Booking(String bookingId, Passenger passenger, Schedule schedule, Seat selectedSeat) {
         this.bookingId = bookingId;
         this.passenger = passenger;
@@ -59,9 +56,6 @@ public class Booking {
         return isPaid;
     }
 
-    /**
-     * Method untuk set payment method.
-     */
     public void setPaymentMethod(PaymentMethod paymentMethod) {
         this.paymentMethod = paymentMethod;
     }
