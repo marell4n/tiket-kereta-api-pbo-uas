@@ -11,7 +11,7 @@ import model.payment.*;
  * @author asus
  */
 public class Booking {
-     private String bookingId;
+    private String bookingId;
     private Passenger passenger;
     private Schedule schedule;
     private Seat selectedSeat;

@@ -16,7 +16,6 @@ public class CreditCardPayment extends PaymentMethod{
         this.cardNumber = cardNumber;
     }
     
-    // Getter (Sesuai UML)
     public String getCardNumber() {
         return cardNumber;
     }

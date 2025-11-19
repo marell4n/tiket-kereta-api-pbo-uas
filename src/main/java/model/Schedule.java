@@ -5,6 +5,7 @@
 package model;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 /**
  *
@@ -16,6 +17,7 @@ public class Schedule {
     private Train train; // Agregasi
     private LocalDateTime departureTime;
     private double price;
+    private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");
 
     public Schedule(String scheduleId, Route route, Train train, LocalDateTime departureTime, double price) {
         this.scheduleId = scheduleId;
@@ -75,6 +77,6 @@ public class Schedule {
         return train.getTrainName() + " (" + 
                route.getOriginStation().getStationCode() + " -> " + 
                route.getDestinationStation().getStationCode() + ") - " +
-               util.DateUtil.formatLDT(departureTime);
+               departureTime.format(FORMATTER);
     }
 }

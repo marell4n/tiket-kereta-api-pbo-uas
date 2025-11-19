@@ -4,7 +4,7 @@
  */
 package model;
 
-import util.*;
+import java.time.format.DateTimeFormatter;
 import model.payment.*;
 
 /**
@@ -21,6 +21,8 @@ public class Ticket {
     }
 
     public String getFormattedTicket() {
+        final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");
+        
         StringBuilder sb = new StringBuilder();
         sb.append("--- TIKET KERETA API ---\n");
         sb.append("ID Tiket: ").append(ticketId).append("\n");
@@ -33,8 +35,9 @@ public class Ticket {
           .append(" -> ")
           .append(bookingDetails.getSchedule().getRoute().getDestinationStation().getStationName()).append("\n");
         
-        // Dependency ke DateUtil
-        sb.append("Berangkat: ").append(DateUtil.formatLDT(bookingDetails.getSchedule().getDepartureTime())).append("\n");
+        sb.append("Berangkat: ")
+          .append(bookingDetails.getSchedule().getDepartureTime().format(formatter)) 
+          .append("\n");
         
         sb.append("Harga: Rp").append(bookingDetails.getTotalAmount()).append("\n");
         sb.append("Status: ").append(bookingDetails.isPaid() ? "LUNAS" : "BELUM LUNAS").append("\n");

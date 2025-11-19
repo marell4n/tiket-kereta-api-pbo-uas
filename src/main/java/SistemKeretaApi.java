@@ -7,7 +7,7 @@ import java.util.Scanner;
 import model.*;
 import model.payment.*;
 import service.*;
-import util.*;
+import java.time.format.DateTimeFormatter;
 import repository.*;
 
 /**
@@ -20,6 +20,7 @@ public class SistemKeretaApi {
     private static BookingService service;
     private static Passenger passenger;
     private static Scanner sc;
+    private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");
     
     public static void main(String[] args) {
         System.out.println("--- SELAMAT DATANG DI SISTEM BOOKING TIKET KERETA API ---");
@@ -80,7 +81,7 @@ public class SistemKeretaApi {
         for (int i = 0; i < schedules.size(); i++) {
             Schedule s = schedules.get(i);
             System.out.println((i + 1) + ". " + s.getTrain().getTrainName() + 
-                               " (" + DateUtil.formatLDT(s.getDepartureTime()) + ")" +
+                               " (" + s.getDepartureTime().format(FORMATTER) + ")" +
                                " - Rp" + s.getPrice());
         }
         
