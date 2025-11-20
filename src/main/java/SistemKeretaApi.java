@@ -167,6 +167,7 @@ public class SistemKeretaApi {
                 System.out.println("Tiket #" + (i+1) + " (ID: " + t.getTicketId() + ")");
                 System.out.println("Rute: " + t.getBookingDetails().getSchedule().getRoute().getOriginStation().getStationName() + 
                                    " -> " + t.getBookingDetails().getSchedule().getRoute().getDestinationStation().getStationName());
+                System.out.println("No. Kursi: " + t.getBookingDetails().getSelectedSeat().getSeatNumber());
                 System.out.println("Status: " + (t.getBookingDetails().isPaid() ? "LUNAS" : "BELUM LUNAS"));
                 System.out.println("-------------------------------");
             }

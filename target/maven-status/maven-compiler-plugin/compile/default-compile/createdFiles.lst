@@ -3,16 +3,13 @@ model\Station.class
 service\BookingService.class
 model\Passenger.class
 repository\TicketRepository.class
-BookingGUI.class
 repository\Repository.class
 model\Route.class
-BookingGUI$2.class
 SistemKeretaApi.class
 model\Booking.class
 model\Seat.class
 repository\ScheduleRepository.class
 model\payment\BankTransferPayment.class
-BookingGUI$1.class
 model\Ticket.class
 model\payment\PaymentMethod.class
 model\payment\CreditCardPayment.class
